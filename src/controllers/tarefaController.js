@@ -39,7 +39,6 @@ export const getAll = async (request, response) => {
     response.status(500).json({ message: "erro ao buscar tarefas" });
   }
 };
-
 //*precisa de validação
 export const create = async (request, response) => {
   //*IMPLEMENTAR A VALIDAÇÃO
@@ -172,3 +171,5 @@ export const getTarefaPorSituacao = async (request, response) => {
     response.status(500).json({ err: "erro ao buscar tarefas" });
   }
 };
+
+
