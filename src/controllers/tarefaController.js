@@ -12,6 +12,9 @@ const createSchema = z.object({
     .min(5, { message: "a descrição deve ter pelo menos 5 caracteres" }),
 });
 
+const getSchema = z.object({
+  id: z.string().uuid({ message: "o id da tarefa está inválido" }),
+});
 //*tarefas?page=1&limit=10
 export const getAll = async (request, response) => {
   const page = parseInt(request.query.page) || 1;
@@ -79,6 +82,14 @@ export const create = async (request, response) => {
 };
 //*precisa de validação
 export const getTarefa = async (request, response) => {
+  const paramValidator = getSchema.safeParse(request.params);
+  if (!paramValidator.success) {
+    response.status(400).json({
+      message: "número de identifcação está inválido",
+      detalhes: formatZodError(paramValidator.error),
+    });
+    return;
+  }
   const { id } = request.params;
   try {
     // const tarefa = await Tarefa.findByPk(id);
@@ -171,5 +182,3 @@ export const getTarefaPorSituacao = async (request, response) => {
     response.status(500).json({ err: "erro ao buscar tarefas" });
   }
 };
-
-
